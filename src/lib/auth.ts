@@ -2,10 +2,10 @@ import { betterAuth, type BetterAuthPlugin } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { createAuthMiddleware } from "better-auth/api";
 import { twoFactor } from "better-auth/plugins";
+import { RESEND_COOLDOWN_SECONDS } from "@/shared/lib/constants";
 import { prisma } from "./prisma";
 
-/** Seconds a user must wait before asking for another email code or reset link. */
-export const RESEND_COOLDOWN_SECONDS = 30;
+export { RESEND_COOLDOWN_SECONDS };
 
 const isEmailSignIn = ({ path }: { path?: string }) => path === "/sign-in/email";
 
