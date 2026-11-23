@@ -23,8 +23,34 @@ export function AuthCard() {
   const signup = useIntlayer("signup");
 
   const isSignup = state.step === "signup";
-  const heading = isSignup ? signup.heading : login.heading;
-  const subheading = isSignup ? signup.subheading : login.subheading;
+  const isVerifying = state.step === "verify";
+
+  const heading = isVerifying
+    ? common.verifyHeading
+    : isSignup
+      ? signup.heading
+      : login.heading;
+  const subheading = isVerifying ? common.verifyPending : isSignup ? signup.subheading : login.subheading;
+
+  // The verification step replaces the form in place rather than navigating, so the
+  // card keeps its chrome and the tabs disappear. Filled in by the two-factor feature.
+  if (isVerifying) {
+    return (
+      <div className="flex w-full max-w-[595px] flex-col items-center gap-4xl rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]">
+        <header className="flex flex-col items-center justify-center gap-2.5 text-center">
+          <h1 className="text-lm font-semibold leading-[34px] text-white">{heading}</h1>
+          <p className="text-s font-light text-white/80">{subheading}</p>
+        </header>
+        <button
+          type="button"
+          onClick={() => setState({ step: "login" })}
+          className="cursor-pointer text-sx font-medium text-primary-200 transition-colors hover:text-white"
+        >
+          {common.backToSignIn}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full max-w-[595px] flex-col items-center gap-4xl rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]">
@@ -57,7 +83,13 @@ export function AuthCard() {
             <div className="h-px w-full bg-white/15" />
           </div>
 
-          {isSignup ? <SignupForm /> : <LoginForm />}
+          {isSignup ? (
+            <SignupForm />
+          ) : (
+            <LoginForm
+              onTwoFactorRequired={(email, methods) => setState({ step: "verify", email, methods })}
+            />
+          )}
         </div>
 
         <div className="flex items-center justify-center gap-2.5">

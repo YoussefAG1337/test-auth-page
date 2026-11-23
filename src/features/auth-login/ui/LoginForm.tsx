@@ -3,18 +3,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getLocalizedPath } from "intlayer";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useIntlayer, useLocale } from "next-intlayer";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useAuthErrorMessage } from "@/shared/lib/use-auth-error-message";
 import { Button } from "@/shared/ui/button";
+import { FormError } from "@/shared/ui/form-error";
 import { PasswordInput } from "@/shared/ui/password-input";
 import { TextInput } from "@/shared/ui/text-input";
 import { buildLoginSchema, type LoginInput } from "../model/schema";
+import { useLogin } from "../model/use-login";
 
-export function LoginForm() {
+type LoginFormProps = {
+  onTwoFactorRequired: (email: string, methods: string[]) => void;
+};
+
+export function LoginForm({ onTwoFactorRequired }: LoginFormProps) {
   const common = useIntlayer("common");
   const content = useIntlayer("login");
   const { locale } = useLocale();
+  const router = useRouter();
+  const login = useLogin();
+  const authErrorMessage = useAuthErrorMessage();
 
   const schema = useMemo(
     () =>
@@ -28,15 +39,25 @@ export function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginInput>({ resolver: zodResolver(schema) });
 
-  const onSubmit = handleSubmit(() => {
-    // Wired to Better-Auth in a follow-up commit.
+  const onSubmit = handleSubmit((values) => {
+    login.mutate(values, {
+      onSuccess: (result) => {
+        if (result.outcome === "two-factor") {
+          onTwoFactorRequired(values.email, result.methods);
+          return;
+        }
+        router.push(getLocalizedPath("/dashboard", locale));
+      },
+    });
   });
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex w-full flex-col gap-2xl">
+    // method="post" guards the window before hydration: without it the browser's
+    // fallback submit is a GET, which would put the password in the URL and history.
+    <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
       <div className="flex w-full flex-col gap-xl">
         <div className="flex w-full flex-col gap-m">
           <TextInput
@@ -66,12 +87,14 @@ export function LoginForm() {
         </Link>
       </div>
 
+      <FormError message={authErrorMessage(login.error?.key)} />
+
       <Button
         type="submit"
         variant="primary"
         alignment="center"
         textSize="base"
-        isLoading={isSubmitting}
+        isLoading={login.isPending}
         className="w-full rounded-s px-l py-m font-semibold text-white/90"
       >
         {content.submit}
