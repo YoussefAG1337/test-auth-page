@@ -39,17 +39,17 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     const [isVisible, setIsVisible] = useState(false);
 
     return (
-      <div className={cn("flex w-full flex-col gap-4", className)}>
+      <div className={cn("flex w-full flex-col gap-s", className)}>
         <div
           className={cn(
-            "group/password relative rounded-sm bg-black/10 font-display",
+            "group/password relative rounded-s bg-white/5 font-display",
             errorMessage && "bg-danger/5",
           )}
         >
           <fieldset
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute -top-2 inset-x-0 bottom-0 min-w-0 rounded-sm border border-white/40 px-3 transition-colors duration-200 group-hover/password:border-white/60 group-focus-within/password:border-white/60 motion-reduce:transition-none",
+              "pointer-events-none absolute -top-2 inset-x-0 bottom-0 min-w-0 rounded-s border border-white/40 px-4 transition-colors duration-200 group-hover/password:border-white/60 group-focus-within/password:border-white/60 motion-reduce:transition-none",
               errorMessage
                 && "border-danger group-hover/password:border-danger group-focus-within/password:border-danger",
             )}
@@ -70,8 +70,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
               [describedBy, errorMessage ? errorId : undefined].filter(Boolean).join(" ") || undefined
             }
             placeholder=" "
-            className="w-full gap-4 px-4 py-2.5"
-            inputClassName="h-7 w-full text-lg leading-7 text-white"
+            // Fixed height rather than vertical padding: the visibility toggle's box is
+            // taller than the text, and would otherwise make this field outgrow the others.
+            className="h-[49px] w-full gap-4 px-l"
+            inputClassName="h-[17px] w-full text-sx leading-[17px] text-white"
             rightElement={
               <Button
                 type="button"
@@ -90,7 +92,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              "absolute top-1/2 left-4 origin-left -translate-y-1/2 cursor-text text-lg leading-7 text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/password:text-white/60 group-has-[input:not(:placeholder-shown)]/password:top-0 group-has-[input:not(:placeholder-shown)]/password:scale-[0.666667] group-has-[input:not(:placeholder-shown)]/password:text-white/60 motion-reduce:transition-none",
+              // Floats from the 14px field text down to the 12px legend text: 12/14.
+              "absolute top-1/2 left-l origin-left -translate-y-1/2 cursor-text text-sx leading-[17px] text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/password:text-white/60 group-has-[input:not(:placeholder-shown)]/password:top-0 group-has-[input:not(:placeholder-shown)]/password:scale-[0.857143] group-has-[input:not(:placeholder-shown)]/password:text-white/60 motion-reduce:transition-none",
               errorMessage
                 && "text-danger group-hover/password:text-danger group-has-[input:not(:placeholder-shown)]/password:text-danger",
             )}

@@ -30,17 +30,17 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const errorId = `${inputId}-error`;
 
     return (
-      <div className={cn("flex w-full flex-col gap-4", className)}>
+      <div className={cn("flex w-full flex-col gap-s", className)}>
         <div
           className={cn(
-            "group/field relative rounded-sm bg-black/10 font-display",
+            "group/field relative rounded-s bg-white/5 font-display",
             errorMessage && "bg-danger/5",
           )}
         >
           <fieldset
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute -top-2 inset-x-0 bottom-0 min-w-0 rounded-sm border border-white/40 px-3 transition-colors duration-200 group-hover/field:border-white/60 group-focus-within/field:border-white/60 motion-reduce:transition-none",
+              "pointer-events-none absolute -top-2 inset-x-0 bottom-0 min-w-0 rounded-s border border-white/40 px-4 transition-colors duration-200 group-hover/field:border-white/60 group-focus-within/field:border-white/60 motion-reduce:transition-none",
               errorMessage
                 && "border-danger group-hover/field:border-danger group-focus-within/field:border-danger",
             )}
@@ -60,13 +60,14 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               [describedBy, errorMessage ? errorId : undefined].filter(Boolean).join(" ") || undefined
             }
             placeholder=" "
-            className="w-full gap-4 px-4 py-2.5"
-            inputClassName="h-7 w-full text-lg leading-7 text-white"
+            className="h-[49px] w-full gap-4 px-l"
+            inputClassName="h-[17px] w-full text-sx leading-[17px] text-white"
           />
           <label
             htmlFor={inputId}
             className={cn(
-              "absolute top-1/2 left-4 origin-left -translate-y-1/2 cursor-text text-lg leading-7 text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/field:text-white/60 group-has-[input:not(:placeholder-shown)]/field:top-0 group-has-[input:not(:placeholder-shown)]/field:scale-[0.666667] group-has-[input:not(:placeholder-shown)]/field:text-white/60 motion-reduce:transition-none",
+              // Floats from the 14px field text down to the 12px legend text: 12/14.
+              "absolute top-1/2 left-l origin-left -translate-y-1/2 cursor-text text-sx leading-[17px] text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/field:text-white/60 group-has-[input:not(:placeholder-shown)]/field:top-0 group-has-[input:not(:placeholder-shown)]/field:scale-[0.857143] group-has-[input:not(:placeholder-shown)]/field:text-white/60 motion-reduce:transition-none",
               errorMessage
                 && "text-danger group-hover/field:text-danger group-has-[input:not(:placeholder-shown)]/field:text-danger",
             )}
