@@ -15,6 +15,13 @@ const commonContent = {
     termsOfUse: t({ en: "Terms of use", fr: "Conditions d’utilisation" }),
     privacyPolicy: t({ en: "Privacy policy", fr: "Politique de confidentialité" }),
 
+    dashboardHeading: t({ en: "You are signed in", fr: "Vous êtes connecté" }),
+    dashboardBody: t({
+      en: "This page is only reachable with a valid session.",
+      fr: "Cette page n’est accessible qu’avec une session valide.",
+    }),
+    signOut: t({ en: "Sign out", fr: "Se déconnecter" }),
+
     verifyHeading: t({ en: "Confirm your identity", fr: "Confirmez votre identité" }),
     verifyPending: t({
       en: "Two-step verification for this account is not available yet.",

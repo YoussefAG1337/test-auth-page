@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Intlayer's generated dictionaries and types.
+    ".intlayer/**",
+    "src/generated/**",
   ]),
 ]);
 
