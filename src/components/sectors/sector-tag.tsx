@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { type Sector, sectorMap } from "./sectors";
 
 type SectorTagVariant = "empty-small" | "filled-large" | "empty-large";
