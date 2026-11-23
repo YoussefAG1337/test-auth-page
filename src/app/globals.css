@@ -62,6 +62,9 @@
   --color-warning-700: color-mix(in oklab, var(--color-warning) 80%, transparent);
   --color-warning-800: color-mix(in oklab, var(--color-warning) 90%, transparent);
 
+  --color-closed: #e75261;
+  --color-closed-50: rgba(212, 107, 117, 0.1);
+
   --color-info: #18a4b9;
   --color-info-50: color-mix(in oklab, var(--color-info) 10%, transparent);
   --color-info-100: color-mix(in oklab, var(--color-info) 20%, transparent);
