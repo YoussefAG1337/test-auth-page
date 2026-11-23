@@ -21,12 +21,16 @@
     "better-auth": "^1.7.25",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "intlayer": "^9.8.4",
     "lucide-react": "^1.75.0",
     "next": "16.4.6",
+    "next-intlayer": "^9.8.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.92.0",
-    "tailwind-merge": "^3.7.0"
+    "react-intlayer": "^9.8.4",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",
