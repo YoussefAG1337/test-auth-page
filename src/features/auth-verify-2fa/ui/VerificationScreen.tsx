@@ -9,6 +9,7 @@ import { FormError } from "@/shared/ui/form-error";
 import { useEmailCode } from "../model/use-email-code";
 import { type CodeChannel, useVerifyCode } from "../model/use-verify-code";
 import { OtpInput, type OtpInputHandle } from "./OtpInput";
+import { ResendTimer } from "./ResendTimer";
 
 const linkClassName =
   "cursor-pointer text-sx font-medium leading-5 text-primary-200 transition-colors hover:text-white";
@@ -104,10 +105,11 @@ export function VerificationScreen({
             </button>
           )}
           {showResend && (
-            <p className="flex items-center gap-s text-sx">
-              <span className="font-medium leading-5 text-primary-200 opacity-50">{content.resendCode}</span>
-              <span className="font-light text-white/80">(30s)</span>
-            </p>
+            <ResendTimer
+              endsAt={emailCode.cooldownEnd}
+              onResend={emailCode.send}
+              label={content.resendCode}
+            />
           )}
           <button type="button" onClick={onUseRecoveryCode} className={linkClassName}>
             {content.useRecoveryCode}
