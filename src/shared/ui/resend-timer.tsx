@@ -10,8 +10,9 @@ type ResendTimerProps = {
   label: ReactNode;
 };
 
-// Node 496:1053: the label dims to 50% and the remaining seconds sit beside it in
-// white/80 while the cooldown runs; once it ends the label is a normal link again.
+// Node 496:1053, and "Renvoyer le lien" on 498:60: the label dims to 50% and the
+// remaining seconds sit beside it in white/80 while the cooldown runs; once it ends
+// the label is a normal link again.
 export function ResendTimer({ endsAt, onResend, label }: ResendTimerProps) {
   const secondsLeft = useCountdown(endsAt);
   const coolingDown = secondsLeft > 0;

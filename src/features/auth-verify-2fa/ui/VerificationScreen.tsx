@@ -6,10 +6,10 @@ import { useIntlayer, useLocale } from "next-intlayer";
 import { useRef, useState } from "react";
 import { useAuthErrorMessage } from "@/shared/lib/use-auth-error-message";
 import { FormError } from "@/shared/ui/form-error";
+import { ResendTimer } from "@/shared/ui/resend-timer";
 import { useEmailCode } from "../model/use-email-code";
 import { type CodeChannel, useVerifyCode } from "../model/use-verify-code";
 import { OtpInput, type OtpInputHandle } from "./OtpInput";
-import { ResendTimer } from "./ResendTimer";
 
 const linkClassName =
   "cursor-pointer text-sx font-medium leading-5 text-primary-200 transition-colors hover:text-white";

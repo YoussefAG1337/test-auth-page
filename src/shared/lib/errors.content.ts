@@ -41,6 +41,10 @@ const errorsContent = {
       en: "Your sign-in session has expired. Please sign in again.",
       fr: "Votre session de connexion a expiré. Veuillez vous reconnecter.",
     }),
+    invalidResetLink: t({
+      en: "This reset link has expired or has already been used.",
+      fr: "Ce lien de réinitialisation a expiré ou a déjà été utilisé.",
+    }),
     generic: t({
       en: "Something went wrong. Please try again.",
       fr: "Une erreur est survenue. Veuillez réessayer.",

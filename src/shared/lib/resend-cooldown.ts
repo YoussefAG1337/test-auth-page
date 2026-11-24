@@ -3,7 +3,7 @@ import { RESEND_COOLDOWN_SECONDS } from "./constants";
 
 // The server enforces the 30s limit; this mirrors it in localStorage so the UI can
 // show the right remaining time after a reload instead of restarting at 30s.
-export type CooldownPurpose = "two-factor-otp";
+export type CooldownPurpose = "two-factor-otp" | "password-reset";
 
 const storageKey = (purpose: CooldownPurpose, email: string) =>
   `stolos:cooldown:${purpose}:${email.toLowerCase()}`;

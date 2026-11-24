@@ -8,6 +8,7 @@ export type AuthErrorKey =
   | "codeExpired"
   | "tooManyCodeAttempts"
   | "twoFactorExpired"
+  | "invalidResetLink"
   | "generic";
 
 export class AuthError extends Error {
@@ -70,6 +71,9 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
       return "tooManyCodeAttempts";
     case "INVALID_TWO_FACTOR_COOKIE":
       return "twoFactorExpired";
+    // The reset link's token: sent for an expired, already used or unknown one alike.
+    case "INVALID_TOKEN":
+      return "invalidResetLink";
     default:
       return "generic";
   }

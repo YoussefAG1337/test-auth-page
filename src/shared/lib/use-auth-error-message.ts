@@ -26,6 +26,8 @@ export function useAuthErrorMessage() {
         return content.tooManyCodeAttempts.value;
       case "twoFactorExpired":
         return content.twoFactorExpired.value;
+      case "invalidResetLink":
+        return content.invalidResetLink.value;
       case "generic":
         return content.generic.value;
       default:

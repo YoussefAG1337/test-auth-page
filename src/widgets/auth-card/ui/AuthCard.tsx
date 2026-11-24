@@ -7,6 +7,7 @@ import { SignupForm } from "@/features/auth-signup";
 import { useAuthErrorMessage } from "@/shared/lib/use-auth-error-message";
 import { cn } from "@/shared/lib/utils";
 import { FormError } from "@/shared/ui/form-error";
+import { GlassCard } from "@/shared/ui/glass-card";
 import {
   clearPendingTwoFactor,
   savePendingTwoFactor,
@@ -14,9 +15,6 @@ import {
 } from "../model/pending-two-factor";
 import type { AuthState } from "../model/state";
 import { TwoFactorStep } from "./TwoFactorStep";
-
-const cardClassName =
-  "flex w-full max-w-[595px] flex-col items-center rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]";
 
 const tabClassName = (isActive: boolean) =>
   cn(
@@ -48,14 +46,14 @@ export function AuthCard() {
   // card keeps its chrome and the tabs disappear.
   if (pending) {
     return (
-      <div className={cn(cardClassName, "gap-3xl")}>
+      <GlassCard className="gap-3xl">
         <TwoFactorStep pending={pending} onLeave={leaveChallenge} />
-      </div>
+      </GlassCard>
     );
   }
 
   return (
-    <div className={cn(cardClassName, "gap-4xl")}>
+    <GlassCard className="gap-4xl">
       <header className="flex flex-col items-center justify-center gap-2.5 text-center">
         <h1 className="text-lm font-semibold leading-[34px] text-white">{heading}</h1>
         <p className="text-s font-light text-white/80">{subheading}</p>
@@ -104,6 +102,6 @@ export function AuthCard() {
           <span className="text-sx tracking-[-0.28px] text-primary-50">{common.privacyPolicy}</span>
         </div>
       </div>
-    </div>
+    </GlassCard>
   );
 }
