@@ -25,6 +25,10 @@ const errorsContent = {
       en: "Incorrect code. Check it and try again.",
       fr: "Code incorrect. Vérifiez-le et réessayez.",
     }),
+    invalidRecoveryCode: t({
+      en: "This recovery code is incorrect or has already been used.",
+      fr: "Ce code de récupération est incorrect ou a déjà été utilisé.",
+    }),
     codeExpired: t({
       en: "This code has expired. Request a new one.",
       fr: "Ce code a expiré. Demandez-en un nouveau.",

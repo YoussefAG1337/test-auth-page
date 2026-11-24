@@ -18,6 +18,8 @@ export function useAuthErrorMessage() {
         return content.tooManyRequests.value;
       case "invalidCode":
         return content.invalidCode.value;
+      case "invalidRecoveryCode":
+        return content.invalidRecoveryCode.value;
       case "codeExpired":
         return content.codeExpired.value;
       case "tooManyCodeAttempts":

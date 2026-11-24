@@ -4,17 +4,16 @@ import { useIntlayer } from "next-intlayer";
 import { useState } from "react";
 import { LoginForm } from "@/features/auth-login";
 import { SignupForm } from "@/features/auth-signup";
-import { VerificationScreen } from "@/features/auth-verify-2fa";
 import { useAuthErrorMessage } from "@/shared/lib/use-auth-error-message";
 import { cn } from "@/shared/lib/utils";
 import { FormError } from "@/shared/ui/form-error";
 import {
   clearPendingTwoFactor,
-  forgetPendingTwoFactor,
   savePendingTwoFactor,
   usePendingTwoFactor,
 } from "../model/pending-two-factor";
 import type { AuthState } from "../model/state";
+import { TwoFactorStep } from "./TwoFactorStep";
 
 const cardClassName =
   "flex w-full max-w-[595px] flex-col items-center rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]";
@@ -50,22 +49,7 @@ export function AuthCard() {
   if (pending) {
     return (
       <div className={cn(cardClassName, "gap-3xl")}>
-        <VerificationScreen
-          email={pending.email}
-          methods={pending.methods}
-          onUseRecoveryCode={() => {}}
-          onSessionExpired={() => leaveChallenge(true)}
-          onVerified={forgetPendingTwoFactor}
-        />
-        {/* Not in the Figma frame, but without it a user who signed in to the wrong
-            account has no way out of the challenge short of waiting for it to expire. */}
-        <button
-          type="button"
-          onClick={() => leaveChallenge()}
-          className="cursor-pointer text-sx font-medium text-primary-200 transition-colors hover:text-white"
-        >
-          {common.backToSignIn}
-        </button>
+        <TwoFactorStep pending={pending} onLeave={leaveChallenge} />
       </div>
     );
   }

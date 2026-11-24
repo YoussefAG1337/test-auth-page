@@ -4,6 +4,7 @@ export type AuthErrorKey =
   | "passwordTooShort"
   | "tooManyRequests"
   | "invalidCode"
+  | "invalidRecoveryCode"
   | "codeExpired"
   | "tooManyCodeAttempts"
   | "twoFactorExpired"
@@ -59,8 +60,10 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
     case "PASSWORD_TOO_SHORT":
       return "passwordTooShort";
     case "INVALID_CODE":
-    case "INVALID_BACKUP_CODE":
       return "invalidCode";
+    // Sent for a wrong code and for one already used: the message has to cover both.
+    case "INVALID_BACKUP_CODE":
+      return "invalidRecoveryCode";
     case "OTP_HAS_EXPIRED":
       return "codeExpired";
     case "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE":
