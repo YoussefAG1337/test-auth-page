@@ -3,6 +3,11 @@ import { t, type Dictionary } from "intlayer";
 const commonContent = {
   key: "common",
   content: {
+    metaDescription: t({
+      en: "Sign in to Stolos to manage your fleet.",
+      fr: "Connectez-vous à Stolos pour gérer votre flotte.",
+    }),
+
     tabLogin: t({ en: "Sign in", fr: "Connexion" }),
     tabSignup: t({ en: "Sign up", fr: "Inscription" }),
 
@@ -15,6 +20,7 @@ const commonContent = {
     termsOfUse: t({ en: "Terms of use", fr: "Conditions d’utilisation" }),
     privacyPolicy: t({ en: "Privacy policy", fr: "Politique de confidentialité" }),
 
+    dashboardMetaTitle: t({ en: "Dashboard", fr: "Tableau de bord" }),
     dashboardHeading: t({ en: "You are signed in", fr: "Vous êtes connecté" }),
     dashboardBody: t({
       en: "This page is only reachable with a valid session.",

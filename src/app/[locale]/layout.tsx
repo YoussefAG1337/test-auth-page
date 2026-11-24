@@ -1,4 +1,4 @@
-import { getHTMLTextDir } from "intlayer";
+import { getHTMLTextDir, getIntlayer } from "intlayer";
 import type { Metadata } from "next";
 import type { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerProvider } from "next-intlayer/server";
@@ -11,9 +11,20 @@ import "../globals.css";
 // request headers — and that would make the whole app dynamic.
 export { generateStaticParams } from "next-intlayer";
 
-export const metadata: Metadata = {
-  title: "Stolos",
-};
+// Each page sets its own localized title; the template appends the product name.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const { metaDescription } = getIntlayer("common", locale);
+
+  return {
+    title: { template: "%s · Stolos", default: "Stolos" },
+    description: metaDescription,
+  };
+}
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
   const { locale } = await params;

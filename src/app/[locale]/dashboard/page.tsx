@@ -1,4 +1,5 @@
 import { getIntlayer, getLocalizedPath } from "intlayer";
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
@@ -13,6 +14,11 @@ export const instant = false;
 type DashboardPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: DashboardPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return { title: getIntlayer("common", locale).dashboardMetaTitle };
+}
 
 export default async function DashboardPage({ params }: DashboardPageProps) {
   const { locale } = await params;

@@ -3,6 +3,7 @@ import { t, type Dictionary } from "intlayer";
 const resetPasswordContent = {
   key: "reset-password",
   content: {
+    metaTitle: t({ en: "New password", fr: "Nouveau mot de passe" }),
     heading: t({ en: "Create a new password", fr: "Créez un nouveau mot de passe" }),
     subheading: t({
       en: "Choose a new password for your account.",

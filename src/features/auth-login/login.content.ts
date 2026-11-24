@@ -3,6 +3,7 @@ import { t, type Dictionary } from "intlayer";
 const loginContent = {
   key: "login",
   content: {
+    metaTitle: t({ en: "Sign in", fr: "Connexion" }),
     heading: t({
       en: "Good to see you again on Stolos!",
       fr: "Ravi de vous revoir sur Stolos !",
