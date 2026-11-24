@@ -110,3 +110,60 @@ enum DevMailKind {
   MFA_CODE
   PASSWORD_RESET
 }
+
+/// A company shown on the cards behind the auth screens. Not part of auth: added for
+/// the fleet overlay, whose content the brief requires to come from the server.
+/// Sector and status mirror the provided `SECTORS` and `CompanyStatus` lists.
+model Company {
+  id            String        @id @default(cuid())
+  name          String
+  descriptionFr String
+  descriptionEn String
+  sectors       Sector[]
+  status        CompanyStatus
+  createdAt     DateTime      @default(now())
+
+  @@map("company")
+}
+
+enum CompanyStatus {
+  ACTIVE
+  CLOSED
+  ACQUIRED
+  INACTIVE
+}
+
+enum Sector {
+  ARTIFICIAL_INTELLIGENCE
+  ECOLOGY
+  FINANCE
+  SOFTWARE
+  SPACE
+  HEALTHCARE
+  INDUSTRY
+  CONSTRUCTION
+  ENERGY
+  RESOURCES
+  REAL_ESTATE
+  HOSPITALITY
+  SOCIAL
+  NEW_TECHNOLOGIES
+  EDUCATION
+  FOOD
+  AGRICULTURE
+  SPORTS
+  MEDIA
+  COMMUNICATIONS
+  CULTURE
+  ENTERTAINMENT
+  TRANSPORT
+  COMPUTER_HARDWARE
+  SERVICES
+  CONSUMER_GOODS
+  DISTRIBUTION
+  TELECOMMUNICATIONS
+  BIOTECHNOLOGY
+  WEB3
+  LEGAL
+  DEFENSE
+}

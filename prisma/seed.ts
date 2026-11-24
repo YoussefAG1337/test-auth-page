@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { TEST_ACCOUNTS, TEST_PASSWORD } from "@/lib/test-accounts";
+import { COMPANIES } from "./companies";
 
 // Re-running the seed resets the test accounts to their initial state.
 for (const account of TEST_ACCOUNTS) {
@@ -32,5 +33,10 @@ for (const account of TEST_ACCOUNTS) {
   await prisma.session.deleteMany({ where: { userId } });
   console.log(`seeded ${account.email}`);
 }
+
+// The cards behind the auth screens. Replaced wholesale, like the accounts above.
+await prisma.company.deleteMany();
+const { count } = await prisma.company.createMany({ data: COMPANIES });
+console.log(`seeded ${count} companies`);
 
 await prisma.$disconnect();
