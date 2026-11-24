@@ -64,7 +64,7 @@ import {
   TVIconFilled,
   Web3IconEmpty,
   Web3IconFilled,
-} from "./icons";
+} from "../ui/icons";
 
 // Sector list, colours and icons, copied from the Stolos web app. Names are yours to translate.
 
