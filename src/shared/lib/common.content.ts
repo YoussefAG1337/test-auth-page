@@ -28,6 +28,12 @@ const commonContent = {
     }),
     signOut: t({ en: "Sign out", fr: "Se déconnecter" }),
 
+    notFoundHeading: t({ en: "Page not found", fr: "Page introuvable" }),
+    notFoundBody: t({
+      en: "This page doesn’t exist or has moved.",
+      fr: "Cette page n’existe pas ou a été déplacée.",
+    }),
+
     backToSignIn: t({ en: "Back to sign in", fr: "Retour à la connexion" }),
 
     validationRequired: t({

@@ -1,4 +1,4 @@
-import { getHTMLTextDir, getIntlayer } from "intlayer";
+import { defaultLocale, getHTMLTextDir, getIntlayer, isDeclaredLocale } from "intlayer";
 import type { Metadata } from "next";
 import type { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerProvider } from "next-intlayer/server";
@@ -27,7 +27,10 @@ export async function generateMetadata({
 }
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
-  const { locale } = await params;
+  const { locale: requested } = await params;
+  // An unknown first segment (/nope) still renders this layout on its way to the
+  // 404. Unprefixed URLs are the default locale, so that is what it falls back to.
+  const locale = isDeclaredLocale(requested) ? requested : defaultLocale;
 
   return (
     <html lang={locale} dir={getHTMLTextDir(locale)} className={htmlClassName}>
