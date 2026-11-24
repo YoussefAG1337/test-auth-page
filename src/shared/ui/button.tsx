@@ -88,8 +88,8 @@ const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
         {children}
       </Slot>
     ) : (
-      <button className={classes} ref={ref} disabled={isDisabled} {...props}>
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+      <button className={classes} ref={ref} disabled={isDisabled} aria-busy={isLoading} {...props}>
+        {isLoading && <Loader2 aria-hidden className="h-4 w-4 animate-spin" />}
         {children}
       </button>
     );

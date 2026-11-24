@@ -18,7 +18,7 @@ import { TwoFactorStep } from "./TwoFactorStep";
 
 const tabClassName = (isActive: boolean) =>
   cn(
-    "relative cursor-pointer pb-sm text-s font-semibold capitalize leading-[1.64] transition-colors",
+    "relative cursor-pointer pb-sm text-s font-semibold leading-[1.64] transition-colors",
     "after:absolute after:inset-x-0 after:-bottom-px after:h-[2px] after:transition-colors",
     isActive
       ? "text-primary-300 after:bg-primary-300"
