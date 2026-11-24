@@ -8,12 +8,9 @@ import { forgetPendingTwoFactor, type PendingTwoFactor } from "../model/pending-
 
 type TwoFactorStepProps = {
   pending: PendingTwoFactor;
-  /** Back to the sign-in form; `sessionExpired` when the server's challenge timed out. */
   onLeave: (sessionExpired?: boolean) => void;
 };
 
-// The two features are siblings and can't import each other, so switching between
-// code entry and the recovery code is owned here.
 export function TwoFactorStep({ pending, onLeave }: TwoFactorStepProps) {
   const common = useIntlayer("common");
   const [view, setView] = useState<"code" | "recovery">("code");
@@ -36,8 +33,6 @@ export function TwoFactorStep({ pending, onLeave }: TwoFactorStepProps) {
           onVerified={forgetPendingTwoFactor}
         />
       )}
-      {/* Not in the Figma frame, but without it a user who signed in to the wrong
-          account has no way out of the challenge short of waiting for it to expire. */}
       <button
         type="button"
         onClick={() => onLeave()}

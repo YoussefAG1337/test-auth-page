@@ -25,13 +25,17 @@ const tabClassName = (isActive: boolean) =>
       : "text-white/80 after:bg-transparent hover:text-white",
   );
 
-export function AuthCard() {
+type AuthCardProps = {
+  pendingCookie: string | null;
+};
+
+export function AuthCard({ pendingCookie }: AuthCardProps) {
   const [state, setState] = useState<AuthState>({ step: "login" });
   const common = useIntlayer("common");
   const login = useIntlayer("login");
   const signup = useIntlayer("signup");
   const authErrorMessage = useAuthErrorMessage();
-  const pending = usePendingTwoFactor();
+  const pending = usePendingTwoFactor(pendingCookie);
 
   const leaveChallenge = (sessionExpired = false) => {
     clearPendingTwoFactor();
@@ -42,8 +46,6 @@ export function AuthCard() {
   const heading = isSignup ? signup.heading : login.heading;
   const subheading = isSignup ? signup.subheading : login.subheading;
 
-  // The verification step replaces the form in place rather than navigating, so the
-  // card keeps its chrome and the tabs disappear.
   if (pending) {
     return (
       <GlassCard className="gap-3xl">

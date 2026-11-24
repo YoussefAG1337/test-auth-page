@@ -1,10 +1,9 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { z } from "zod";
+import { PENDING_TWO_FACTOR_COOKIE } from "./pending-two-factor-cookie";
 
-// The 2FA challenge lives in an httpOnly cookie for 10 minutes, but which step the card
-// shows is client state; this keeps the two in step across a reload. sessionStorage so
-// it dies with the tab, and validated because anything in storage can be stale or edited.
-const STORAGE_KEY = "stolos:2fa";
+// Same 10-minute lifetime as Better-Auth's 2FA cookie; a cookie so the server can render the right step on reload.
+const MAX_AGE_SECONDS = 600;
 
 const pendingTwoFactorSchema = z.object({
   email: z.string(),
@@ -32,35 +31,40 @@ const parse = (raw: string | null): PendingTwoFactor | null => {
   }
 };
 
+const readCookie = (): string | null => {
+  const prefix = `${PENDING_TWO_FACTOR_COOKIE}=`;
+  const entry = document.cookie.split("; ").find((cookie) => cookie.startsWith(prefix));
+  if (!entry) return null;
+  try {
+    return decodeURIComponent(entry.slice(prefix.length));
+  } catch {
+    return null;
+  }
+};
+
+const writeCookie = (value: string, maxAgeSeconds: number) => {
+  const secure = location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${PENDING_TWO_FACTOR_COOKIE}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAgeSeconds}; SameSite=Lax${secure}`;
+};
+
+const removeCookie = () => writeCookie("", 0);
+
 export const savePendingTwoFactor = (pending: PendingTwoFactor) => {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(pending));
+  writeCookie(JSON.stringify(pending), MAX_AGE_SECONDS);
   listeners.forEach((listener) => listener());
 };
 
 export const clearPendingTwoFactor = () => {
-  sessionStorage.removeItem(STORAGE_KEY);
+  removeCookie();
   listeners.forEach((listener) => listener());
 };
 
-/**
- * After a successful verification: drops the entry so a later visit to /login doesn't
- * restore a used challenge, but without notifying, so the card doesn't flash back to
- * the sign-in form while the dashboard navigation is in flight.
- */
+// Doesn't notify, so the sign-in form doesn't flash while the dashboard redirect is in flight.
 export const forgetPendingTwoFactor = () => {
-  sessionStorage.removeItem(STORAGE_KEY);
+  removeCookie();
 };
 
-/**
- * The page is prerendered as the sign-in form (server snapshot `null`); a pending
- * challenge is picked up on the client without a hydration mismatch.
- */
-export const usePendingTwoFactor = (): PendingTwoFactor | null => {
-  // The raw string is the snapshot because it compares stable between renders.
-  const raw = useSyncExternalStore(
-    subscribe,
-    () => sessionStorage.getItem(STORAGE_KEY),
-    () => null,
-  );
+export const usePendingTwoFactor = (serverRaw: string | null): PendingTwoFactor | null => {
+  const raw = useSyncExternalStore(subscribe, readCookie, () => serverRaw);
   return useMemo(() => parse(raw), [raw]);
 };

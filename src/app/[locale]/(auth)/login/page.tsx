@@ -1,6 +1,6 @@
 import { getIntlayer } from "intlayer";
 import type { Metadata } from "next";
-import { AuthCard } from "@/widgets/auth-card";
+import { LoginCard } from "@/widgets/auth-card";
 
 type MetadataProps = {
   params: Promise<{ locale: string }>;
@@ -12,5 +12,5 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 }
 
 export default function LoginPage() {
-  return <AuthCard />;
+  return <LoginCard />;
 }
