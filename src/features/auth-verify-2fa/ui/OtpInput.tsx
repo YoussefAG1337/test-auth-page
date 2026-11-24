@@ -6,6 +6,7 @@ import {
   forwardRef,
   type KeyboardEvent,
   useImperativeHandle,
+  useLayoutEffect,
   useRef,
 } from "react";
 import { cn } from "@/shared/lib/utils";
@@ -30,6 +31,12 @@ const onlyDigits = (text: string) => text.replace(/\D/g, "");
 export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
   ({ value, onChange, onComplete, groupLabel, digitLabel, disabled, invalid }, ref) => {
     const inputs = useRef<(HTMLInputElement | null)[]>([]);
+    // Focus moves in the same tick as onChange, before the parent re-renders with the
+    // new value, so the focus guard below reads this instead of the stale prop.
+    const latestValue = useRef(value);
+    useLayoutEffect(() => {
+      latestValue.current = value;
+    }, [value]);
 
     const focusBox = (index: number) => {
       inputs.current[Math.max(0, Math.min(index, OTP_LENGTH - 1))]?.focus();
@@ -39,6 +46,7 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
 
     const commit = (next: string, focusIndex: number) => {
       const code = next.slice(0, OTP_LENGTH);
+      latestValue.current = code;
       onChange(code);
       focusBox(focusIndex);
       if (code.length === OTP_LENGTH) onComplete(code);
@@ -107,14 +115,17 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
             disabled={disabled}
             // Boxes past the first empty one can't hold a digit, so focus snaps back to it.
             onFocus={(event) => {
-              if (index > value.length) focusBox(value.length);
+              const filled = latestValue.current.length;
+              if (index > filled) focusBox(filled);
               else event.target.select();
             }}
             onKeyDown={handleKeyDown(index)}
             onChange={handleChange(index)}
             onPaste={handlePaste}
             className={cn(
-              "h-[80px] w-[52px] rounded-xs border border-white bg-transparent text-center text-l font-semibold text-white caret-transparent outline-none transition-colors",
+              // Spelled as a length: tailwind-merge doesn't know the custom `text-l` size,
+              // reads it as a colour, and drops it against `text-white`.
+              "h-[80px] w-[52px] rounded-xs border border-white bg-transparent text-center text-[length:var(--text-l)] font-semibold text-white caret-transparent outline-none transition-colors",
               "placeholder:text-white/20 focus:border-primary-200 focus:bg-white/5 disabled:opacity-50",
               invalid && "border-danger focus:border-danger",
             )}
