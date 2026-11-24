@@ -18,8 +18,6 @@ export function useRequestPasswordReset() {
       let retryAfter: number | undefined;
       const { error } = await authClient.requestPasswordReset({
         email,
-        // The emailed link redirects here with ?token= (or ?error=INVALID_TOKEN), so a
-        // localized path makes the link open in the language it was requested in.
         redirectTo: getLocalizedPath("/reset-password", locale),
         fetchOptions: {
           onError: ({ response }) => {

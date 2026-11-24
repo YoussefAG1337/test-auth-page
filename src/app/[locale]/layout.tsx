@@ -6,12 +6,8 @@ import { Providers } from "@/shared/api/providers";
 import { bodyClassName, htmlClassName } from "@/shared/ui/fonts";
 import "../globals.css";
 
-// Root layout for every localized route. It owns <html> so that `lang` can follow
-// the active locale, which a shared app-level root layout could only do by reading
-// request headers — and that would make the whole app dynamic.
 export { generateStaticParams } from "next-intlayer";
 
-// Each page sets its own localized title; the template appends the product name.
 export async function generateMetadata({
   params,
 }: {
@@ -28,8 +24,6 @@ export async function generateMetadata({
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
   const { locale: requested } = await params;
-  // An unknown first segment (/nope) still renders this layout on its way to the
-  // 404. Unprefixed URLs are the default locale, so that is what it falls back to.
   const locale = isDeclaredLocale(requested) ? requested : defaultLocale;
 
   return (

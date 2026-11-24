@@ -9,7 +9,6 @@ import { ResendTimer } from "@/shared/ui/resend-timer";
 import { clearPendingReset } from "../model/pending-reset";
 import { RESET_LINK_COOLDOWN, useRequestPasswordReset } from "../model/use-request-password-reset";
 
-// Node 498:60.
 export function ForgotPasswordSent({ email }: { email: string }) {
   const content = useIntlayer("forgot-password");
   const request = useRequestPasswordReset();
@@ -17,7 +16,7 @@ export function ForgotPasswordSent({ email }: { email: string }) {
   const cooldownEnd = useCooldownEnd(RESET_LINK_COOLDOWN, email);
 
   const resend = () => {
-    // Written before the request so a double click sees the cooldown and doesn't send twice.
+    // Set before the request so a double click doesn't send twice.
     startCooldown(RESET_LINK_COOLDOWN, email);
 
     request.mutate(
@@ -25,14 +24,12 @@ export function ForgotPasswordSent({ email }: { email: string }) {
       {
         onError: (error) => {
           if (error.key !== "tooManyRequests") clearCooldown(RESET_LINK_COOLDOWN, email);
-          // The server is the authority: resync to its remaining wait.
           else if (error.retryAfter) startCooldown(RESET_LINK_COOLDOWN, email, error.retryAfter);
         },
       },
     );
   };
 
-  // 429 is reflected by the timer, not as an error message.
   const bannerKey = request.error?.key === "tooManyRequests" ? undefined : request.error?.key;
 
   return (

@@ -15,11 +15,9 @@ import { useResetPassword } from "../model/use-reset-password";
 type ResetPasswordFormProps = {
   token: string;
   onDone: () => void;
-  /** The token expired or was used between opening the link and submitting. */
   onLinkInvalid: () => void;
 };
 
-// Node 498:357.
 export function ResetPasswordForm({ token, onDone, onLinkInvalid }: ResetPasswordFormProps) {
   const common = useIntlayer("common");
   const content = useIntlayer("reset-password");
@@ -74,7 +72,6 @@ export function ResetPasswordForm({ token, onDone, onLinkInvalid }: ResetPasswor
         <p className="text-s font-light text-white/80">{content.subheading}</p>
       </header>
 
-      {/* method="post": see LoginForm — keeps a pre-hydration submit out of the URL. */}
       <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
         <div className="flex w-full flex-col gap-m">
           <PasswordInput

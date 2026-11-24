@@ -9,7 +9,6 @@ export type CodeChannel = "otp" | "totp";
 
 export type VerifyCodeInput = {
   code: string;
-  /** Tried in order: the same six boxes accept either code for app + email accounts. */
   channels: CodeChannel[];
 };
 
@@ -18,7 +17,6 @@ const verifyWith = (channel: CodeChannel, code: string) =>
     ? authClient.twoFactor.verifyOtp({ code })
     : authClient.twoFactor.verifyTotp({ code });
 
-// Errors that would be the same whichever channel is tried next.
 const isFinal = (key: AuthErrorKey) => key === "twoFactorExpired" || key === "tooManyRequests";
 
 export function useVerifyCode() {
@@ -32,8 +30,6 @@ export function useVerifyCode() {
 
         const key = authErrorKey(error);
         if (isFinal(key)) throw new AuthError(key);
-        // The first channel is the one the user most likely meant, so its error
-        // (e.g. "email code expired") is the useful one to show.
         firstError ??= key;
       }
 

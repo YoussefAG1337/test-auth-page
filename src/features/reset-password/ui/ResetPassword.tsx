@@ -9,11 +9,6 @@ import { GlassCard } from "@/shared/ui/glass-card";
 import { ResetPasswordForm } from "./ResetPasswordForm";
 import { ResetPasswordOutcome } from "./ResetPasswordOutcome";
 
-/**
- * The emailed link goes through Better-Auth first, which redirects here with `?token=`
- * when the token is usable and `?error=INVALID_TOKEN` when it is expired or used.
- * Reads the URL, so the page renders it inside a Suspense boundary.
- */
 export function ResetPassword() {
   const content = useIntlayer("reset-password");
   const { locale } = useLocale();

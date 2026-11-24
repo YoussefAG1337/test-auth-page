@@ -1,10 +1,5 @@
 import type { Prisma } from "@/generated/prisma/client";
 
-// Fictional companies for the cards behind the auth screens. Invented names, so no
-// real company is ever shown as closed or sold. The overlay orders them by name and
-// fills its slots left column first, which puts a "closed" badge top-left and a
-// "sold" one bottom-left, as in the Figma frames. Descriptions stay within two lines
-// of the card's 378px text block.
 export const COMPANIES: Prisma.CompanyCreateManyInput[] = [
   {
     name: "Aerolys",

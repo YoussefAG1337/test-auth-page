@@ -6,7 +6,6 @@ export type ResetPasswordMessages = {
   passwordsDoNotMatch: string;
 };
 
-// Same rules as sign-up: 8 characters is Better-Auth's default minimum.
 export const buildResetPasswordSchema = ({
   required,
   passwordTooShort,

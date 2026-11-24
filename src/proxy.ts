@@ -1,9 +1,6 @@
 export { intlayerProxy as proxy } from "next-intlayer/proxy";
 
-// Explicit allowlist of locale-aware routes, rather than a negative-lookahead
-// matcher — this project mixes locale routes (login, forgot-password,
-// reset-password, dashboard) with non-locale ones (/, /code, /email, /api/*),
-// and a negative lookahead rewrote the bare "/" too, 404ing the homepage.
+// An allowlist: a negative-lookahead matcher also rewrote "/" and 404'd it.
 export const config = {
   matcher: [
     "/login",

@@ -55,8 +55,7 @@ export function LoginForm({ onTwoFactorRequired }: LoginFormProps) {
   });
 
   return (
-    // method="post" guards the window before hydration: without it the browser's
-    // fallback submit is a GET, which would put the password in the URL and history.
+    // method="post" so a submit before hydration doesn't put the password in the URL.
     <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
       <div className="flex w-full flex-col gap-xl">
         <div className="flex w-full flex-col gap-m">

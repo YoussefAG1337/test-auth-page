@@ -4,8 +4,6 @@ import { useIntlayer } from "next-intlayer";
 import { BackToSignInLink } from "@/shared/ui/back-to-sign-in-link";
 import { GlassCard } from "@/shared/ui/glass-card";
 
-// not-found receives no params, so the locale comes from the provider, as in the
-// rest of the client UI.
 export default function NotFound() {
   const common = useIntlayer("common");
 

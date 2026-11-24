@@ -66,8 +66,6 @@ import {
   Web3IconFilled,
 } from "../ui/icons";
 
-// Sector list, colours and icons, copied from the Stolos web app. Names are yours to translate.
-
 export const SECTORS = [
   "ARTIFICIAL_INTELLIGENCE",
   "ECOLOGY",

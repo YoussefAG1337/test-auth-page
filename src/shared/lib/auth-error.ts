@@ -13,7 +13,6 @@ export type AuthErrorKey =
 
 export class AuthError extends Error {
   readonly key: AuthErrorKey;
-  /** Seconds the server asked to wait, from `X-Retry-After` on a 429. */
   readonly retryAfter?: number;
 
   constructor(key: AuthErrorKey, retryAfter?: number) {
@@ -24,15 +23,13 @@ export class AuthError extends Error {
   }
 }
 
-/** Reads `X-Retry-After`; Better-Auth's error object doesn't carry response headers. */
+// Better-Auth's error object doesn't carry response headers.
 export const readRetryAfter = (response: Response): number | undefined => {
   const seconds = Number(response.headers.get("X-Retry-After"));
   return Number.isFinite(seconds) && seconds > 0 ? seconds : undefined;
 };
 
-// Better-Auth's typed error is only { status, statusText, message? } — `code` is sent
-// on the wire but absent from the type, and the two-factor fields live on the plugin's
-// hook type rather than on what signIn.email resolves to. Both are read structurally.
+// `code` and the two-factor fields are sent but missing from Better-Auth's types.
 const toRecord = (value: unknown): Record<string, unknown> | null =>
   typeof value === "object" && value !== null ? { ...value } : null;
 
@@ -46,10 +43,6 @@ const readNumber = (value: unknown, key: string): number | undefined => {
   return typeof found === "number" ? found : undefined;
 };
 
-/**
- * Anything unrecognised collapses to `generic`, so an unmapped server code can never
- * tell a caller more about an account than a wrong password already would.
- */
 export const authErrorKey = (error: unknown): AuthErrorKey => {
   if (readNumber(error, "status") === 429) return "tooManyRequests";
 
@@ -62,7 +55,6 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
       return "passwordTooShort";
     case "INVALID_CODE":
       return "invalidCode";
-    // Sent for a wrong code and for one already used: the message has to cover both.
     case "INVALID_BACKUP_CODE":
       return "invalidRecoveryCode";
     case "OTP_HAS_EXPIRED":
@@ -71,7 +63,6 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
       return "tooManyCodeAttempts";
     case "INVALID_TWO_FACTOR_COOKIE":
       return "twoFactorExpired";
-    // The reset link's token: sent for an expired, already used or unknown one alike.
     case "INVALID_TOKEN":
       return "invalidResetLink";
     default:
@@ -79,7 +70,6 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
   }
 };
 
-/** Sign-in answers with a two-factor challenge instead of a session when 2FA is on. */
 export const readTwoFactorMethods = (data: unknown): string[] | null => {
   const record = toRecord(data);
   if (!record || record.twoFactorRedirect !== true) return null;

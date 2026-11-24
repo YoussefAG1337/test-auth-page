@@ -1,8 +1,6 @@
 import { t, type Dictionary } from "intlayer";
 import type { Sector } from "./model/sectors";
 
-// One label per provided sector. Typed against `Sector` so a sector added to (or
-// renamed in) the provided list fails the build until it has a translation here.
 const sectorLabels = {
   ARTIFICIAL_INTELLIGENCE: t({ en: "AI", fr: "IA" }),
   ECOLOGY: t({ en: "Ecology", fr: "Écologie" }),

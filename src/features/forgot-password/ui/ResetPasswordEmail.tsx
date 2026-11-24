@@ -1,18 +1,11 @@
 import { getIntlayer, Locales } from "intlayer";
 import Image from "next/image";
 
-/**
- * The email is written in the language the reset was requested in. That is carried by
- * the link itself: its `callbackURL` is the localized `/reset-password` path, and the
- * default locale (English) is unprefixed.
- */
 const emailLocale = (resetUrl: string) => {
   const callback = URL.canParse(resetUrl) ? new URL(resetUrl).searchParams.get("callbackURL") : null;
   return callback?.startsWith("/fr/") ? Locales.FRENCH : Locales.ENGLISH;
 };
 
-// Node 500:97: the 720px email as the user would receive it. A server component, so it
-// reads its strings with getIntlayer rather than the hook.
 export function ResetPasswordEmail({ resetUrl }: { resetUrl: string }) {
   const locale = emailLocale(resetUrl);
   const content = getIntlayer("reset-email", locale);

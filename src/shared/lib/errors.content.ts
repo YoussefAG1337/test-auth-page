@@ -1,7 +1,6 @@
 import { t, type Dictionary } from "intlayer";
 
-// One entry per Better-Auth error code we surface. Unmapped codes fall back to
-// `generic` so an unrecognised server error can never leak whether an account exists.
+// Unmapped codes fall back to `generic`, so an error never reveals whether an account exists.
 const errorsContent = {
   key: "errors",
   content: {

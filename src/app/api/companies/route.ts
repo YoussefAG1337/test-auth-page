@@ -2,9 +2,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { CompaniesResponse } from "@/widgets/fleet-overlay";
 
-// The cards behind the auth screens read their content from here, not from the
-// frontend bundle. `?locale=` picks the description's language; anything else falls
-// back to English, the default locale.
 const querySchema = z.object({
   locale: z.enum(["en", "fr"]).catch("en"),
 });

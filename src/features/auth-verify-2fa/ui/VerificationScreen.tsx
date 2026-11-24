@@ -41,7 +41,6 @@ export function VerificationScreen({
   const emailCode = useEmailCode({ email, autoSend: hasEmail && !hasApp, onSessionExpired });
   const verify = useVerifyCode();
 
-  // Without an emailed code there is nothing for verifyOtp to match, so it isn't tried.
   const channels: CodeChannel[] = !hasEmail
     ? ["totp"]
     : !hasApp
@@ -64,7 +63,6 @@ export function VerificationScreen({
             return;
           }
           setCode("");
-          // The boxes are disabled while verifying; focus once they're enabled again.
           requestAnimationFrame(() => otpRef.current?.focusFirst());
         },
       },

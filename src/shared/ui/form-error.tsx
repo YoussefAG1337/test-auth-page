@@ -1,7 +1,5 @@
 import { cn } from "@/shared/lib/utils";
 
-// Form-level errors only — anything tied to a single field goes through that
-// field's own `errorMessage` prop instead.
 export function FormError({ message, className }: { message?: string; className?: string }) {
   if (!message) return null;
 

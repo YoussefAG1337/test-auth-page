@@ -1,8 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { RESEND_COOLDOWN_SECONDS } from "./constants";
 
-// The server enforces the 30s limit; this mirrors it in localStorage so the UI can
-// show the right remaining time after a reload instead of restarting at 30s.
+// Mirrors the server's limit so the timer survives a reload.
 export type CooldownPurpose = "two-factor-otp" | "password-reset";
 
 const storageKey = (purpose: CooldownPurpose, email: string) =>
@@ -11,7 +10,6 @@ const storageKey = (purpose: CooldownPurpose, email: string) =>
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((listener) => listener());
 
-// The `storage` event also brings in cooldowns started from another tab.
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
   window.addEventListener("storage", listener);
@@ -21,7 +19,6 @@ const subscribe = (listener: () => void) => {
   };
 };
 
-/** Timestamp (ms) the cooldown ends at, or 0 when nothing was ever sent. */
 export const getCooldownEnd = (purpose: CooldownPurpose, email: string): number => {
   const end = Number(localStorage.getItem(storageKey(purpose, email)));
   return Number.isFinite(end) ? end : 0;

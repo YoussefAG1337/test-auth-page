@@ -12,8 +12,6 @@ type ResetPasswordOutcomeProps = {
   children?: ReactNode;
 };
 
-// The two end states Figma doesn't draw (link unusable, password saved). They reuse
-// the request screen's structure: heading block, then one primary action.
 export function ResetPasswordOutcome({
   heading,
   body,

@@ -9,8 +9,6 @@ export type TextInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "placeh
   errorMessage?: string;
 };
 
-// Mirrors password-input.tsx's floating-label structure so every field in the app
-// looks and behaves identically; the only difference is the missing visibility toggle.
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
     {
@@ -66,7 +64,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              // Floats from the 14px field text down to the 12px legend text: 12/14.
               "absolute top-1/2 left-l origin-left -translate-y-1/2 cursor-text text-sx leading-[17px] text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/field:text-white/60 group-has-[input:not(:placeholder-shown)]/field:top-0 group-has-[input:not(:placeholder-shown)]/field:scale-[0.857143] group-has-[input:not(:placeholder-shown)]/field:text-white/60 motion-reduce:transition-none",
               errorMessage
                 && "text-danger group-hover/field:text-danger group-has-[input:not(:placeholder-shown)]/field:text-danger",

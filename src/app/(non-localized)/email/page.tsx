@@ -5,14 +5,10 @@ import { Suspense } from "react";
 import { ResetPasswordEmail } from "@/features/forgot-password";
 import { prisma } from "@/lib/prisma";
 
-// Development mailbox for the reset email: no real email is sent, so the last stored
-// link is rendered as the email the user would have received. `?to=` picks an account.
-
 type EmailPageProps = {
   searchParams: Promise<{ to?: string | string[] }>;
 };
 
-// Reads the database on every request, so it streams in behind the static page shell.
 async function LatestResetEmail({ searchParams }: EmailPageProps) {
   await connection();
   const { to } = await searchParams;

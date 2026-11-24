@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// A factory for the same reason as the login schema: the message is translated.
 export const buildRecoveryCodeSchema = ({ required }: { required: string }) =>
   z.object({
     code: z.string().trim().min(1, { message: required }),

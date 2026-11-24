@@ -18,8 +18,6 @@ export function SignOutButton() {
 
   const signOut = useMutation<void, AuthError>({
     mutationFn: async () => {
-      // Better-Auth resolves with { error } instead of rejecting, and a network
-      // failure rejects with something else: both end up as an AuthError.
       const result = await authClient.signOut().catch((cause: unknown) => ({ error: cause }));
       if (result.error) throw new AuthError(authErrorKey(result.error));
     },

@@ -6,14 +6,9 @@ type CompanyCardProps = {
   name: string;
   description: string;
   status: CompanyStatus;
-  /** The sector tags. Passed in because sectors are another entity this one can't import. */
   sectors: ReactNode;
 };
 
-// Figma "Mode Carte" (490:1342). The design's logos are a placeholder image, so the
-// company's initial stands in, both in the small circle and in the large faded copy
-// behind the top-left corner. That copy's mask reproduces the design's: a radial fade
-// from 30% to nothing, centred on the card's corner, over ~183px.
 export function CompanyCard({ name, description, status, sectors }: CompanyCardProps) {
   const initial = name.charAt(0).toUpperCase();
 

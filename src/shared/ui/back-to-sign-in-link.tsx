@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useIntlayer, useLocale } from "next-intlayer";
 
 type BackToSignInLinkProps = {
-  /** Runs before navigating, e.g. to drop state that would otherwise be restored later. */
   onClick?: () => void;
 };
 

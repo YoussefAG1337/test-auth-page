@@ -13,7 +13,6 @@ const resetPasswordContent = {
     confirmPasswordLabel: t({ en: "Confirm the password", fr: "Confirmez le mot de passe" }),
     submit: t({ en: "Save the password", fr: "Enregistrer le mot de passe" }),
 
-    // Not in Figma: what the link leads to when it can't be used any more.
     invalidHeading: t({ en: "Link expired or already used", fr: "Lien expiré ou déjà utilisé" }),
     invalidBody: t({
       en: "This reset link is no longer valid. Request a new one to choose a new password.",
@@ -21,7 +20,6 @@ const resetPasswordContent = {
     }),
     requestNewLink: t({ en: "Request a new link", fr: "Demander un nouveau lien" }),
 
-    // Not in Figma: shown once the new password is saved.
     doneHeading: t({ en: "Password updated", fr: "Mot de passe mis à jour" }),
     doneBody: t({
       en: "You can now sign in with your new password.",

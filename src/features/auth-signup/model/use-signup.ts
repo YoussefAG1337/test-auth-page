@@ -5,8 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { AuthError, authErrorKey } from "@/shared/lib/auth-error";
 import type { SignupInput } from "./schema";
 
-// The design has no name field, but Better-Auth requires one, so it comes from the
-// address the account is created with.
+// Better-Auth requires a name, and the design has no field for it.
 const nameFromEmail = (email: string) => {
   const localPart = email.split("@")[0]?.trim();
   return localPart && localPart.length > 0 ? localPart : "Stolos";

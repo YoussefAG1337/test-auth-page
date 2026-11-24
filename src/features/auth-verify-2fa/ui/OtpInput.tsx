@@ -16,7 +16,6 @@ export const OTP_LENGTH = 6;
 export type OtpInputHandle = { focusFirst: () => void };
 
 type OtpInputProps = {
-  /** Digits entered so far, always contiguous from the first box. */
   value: string;
   onChange: (value: string) => void;
   onComplete: (code: string) => void;
@@ -31,8 +30,7 @@ const onlyDigits = (text: string) => text.replace(/\D/g, "");
 export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
   ({ value, onChange, onComplete, groupLabel, digitLabel, disabled, invalid }, ref) => {
     const inputs = useRef<(HTMLInputElement | null)[]>([]);
-    // Focus moves in the same tick as onChange, before the parent re-renders with the
-    // new value, so the focus guard below reads this instead of the stale prop.
+    // The focus guard reads this: the prop is still stale in this tick.
     const latestValue = useRef(value);
     useLayoutEffect(() => {
       latestValue.current = value;
@@ -52,8 +50,6 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
       if (code.length === OTP_LENGTH) onComplete(code);
     };
 
-    // Writes `digits` starting at `index`; a full code (paste, autofill) always
-    // starts from the first box, whichever box received it.
     const fill = (digits: string, index: number) => {
       if (digits.length >= OTP_LENGTH) {
         commit(digits, OTP_LENGTH - 1);
@@ -83,8 +79,7 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
       }
     };
 
-    // Reached by mobile keyboards (whose keydown reports no key) and by
-    // one-time-code autofill, which drops the whole code into a single box.
+    // Mobile keyboards and one-time-code autofill land here rather than in onKeyDown.
     const handleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const digits = onlyDigits(event.target.value);
       if (!digits) return;
@@ -113,7 +108,6 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
             placeholder="0"
             value={value[index] ?? ""}
             disabled={disabled}
-            // Boxes past the first empty one can't hold a digit, so focus snaps back to it.
             onFocus={(event) => {
               const filled = latestValue.current.length;
               if (index > filled) focusBox(filled);
@@ -123,8 +117,7 @@ export const OtpInput = forwardRef<OtpInputHandle, OtpInputProps>(
             onChange={handleChange(index)}
             onPaste={handlePaste}
             className={cn(
-              // Spelled as a length: tailwind-merge doesn't know the custom `text-l` size,
-              // reads it as a colour, and drops it against `text-white`.
+              // Not `text-l`: tailwind-merge reads it as a colour and drops it.
               "h-[80px] w-[52px] rounded-xs border border-white bg-transparent text-center text-[length:var(--text-l)] font-semibold text-white caret-transparent outline-none transition-colors",
               "placeholder:text-white/20 focus:border-primary-200 focus:bg-white/5 disabled:opacity-50",
               invalid && "border-danger focus:border-danger",

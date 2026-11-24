@@ -50,7 +50,6 @@ export function SignupForm() {
     hide: common.hidePassword.value,
   };
 
-  // These two say something specific about a field; everything else is a form-level problem.
   const serverError = signup.error?.key;
   const serverEmailError = serverError === "emailAlreadyUsed" ? authErrorMessage(serverError) : undefined;
   const serverPasswordError =
@@ -61,8 +60,7 @@ export function SignupForm() {
       : undefined;
 
   return (
-    // method="post" guards the window before hydration: without it the browser's
-    // fallback submit is a GET, which would put the password in the URL and history.
+    // method="post" so a submit before hydration doesn't put the password in the URL.
     <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
       <div className="flex w-full flex-col gap-m">
         <TextInput

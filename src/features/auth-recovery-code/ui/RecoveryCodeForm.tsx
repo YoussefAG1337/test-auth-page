@@ -19,7 +19,6 @@ type RecoveryCodeFormProps = {
   onVerified: () => void;
 };
 
-// Node 512:715.
 export function RecoveryCodeForm({
   onUseVerificationCode,
   onSessionExpired,
@@ -52,7 +51,6 @@ export function RecoveryCodeForm({
       },
       onError: (error) => {
         if (error.key === "twoFactorExpired") onSessionExpired();
-        // A wrong or already-used code belongs to the field, not a banner.
         else if (error.key === "invalidRecoveryCode") {
           setError("code", { message: authErrorMessage(error.key) });
         }
@@ -60,7 +58,6 @@ export function RecoveryCodeForm({
     });
   });
 
-  // Field errors are shown on the field; only the rest (429, generic) gets the banner.
   const bannerKey =
     verify.error && verify.error.key !== "invalidRecoveryCode" ? verify.error.key : undefined;
 
@@ -68,7 +65,6 @@ export function RecoveryCodeForm({
     <div className="flex w-full flex-col items-center gap-3xl">
       <h1 className="text-center text-lm font-semibold leading-[34px] text-white">{content.heading}</h1>
 
-      {/* method="post": see LoginForm — keeps a pre-hydration submit out of the URL. */}
       <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
         <TextInput
           autoComplete="one-time-code"

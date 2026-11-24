@@ -34,7 +34,6 @@ for (const account of TEST_ACCOUNTS) {
   console.log(`seeded ${account.email}`);
 }
 
-// The cards behind the auth screens. Replaced wholesale, like the accounts above.
 await prisma.company.deleteMany();
 const { count } = await prisma.company.createMany({ data: COMPANIES });
 console.log(`seeded ${count} companies`);

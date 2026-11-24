@@ -16,9 +16,6 @@ const loginContent = {
       en: "Forgot your password?",
       fr: "Mot de passe oublié ?",
     }),
-    // The Figma frame renders "S'inscrire" here, but that is its button component's
-    // default label leaking through — a sign-up label on the sign-in tab. Deliberately
-    // corrected; see plan/phase-2-auth-card.md.
     submit: t({ en: "Sign in", fr: "Se connecter" }),
   },
 } satisfies Dictionary;

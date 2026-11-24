@@ -14,7 +14,6 @@ import { savePendingReset } from "../model/pending-reset";
 import { buildForgotPasswordSchema, type ForgotPasswordInput } from "../model/schema";
 import { RESET_LINK_COOLDOWN, useRequestPasswordReset } from "../model/use-request-password-reset";
 
-// Node 497:52.
 export function ForgotPasswordRequest() {
   const common = useIntlayer("common");
   const content = useIntlayer("forgot-password");
@@ -32,8 +31,7 @@ export function ForgotPasswordRequest() {
     formState: { errors },
   } = useForm<ForgotPasswordInput>({ resolver: zodResolver(schema) });
 
-  // A 429 stays a banner here rather than moving on: the server limits per caller, not
-  // per email, so the recent send may have been for another address.
+  // 429 stays a banner: the limit is per caller, so the last send may have been for another address.
   const onSubmit = handleSubmit((values) => {
     request.mutate(values, {
       onSuccess: () => {
@@ -50,7 +48,6 @@ export function ForgotPasswordRequest() {
         <p className="text-s font-light text-white/80">{content.subheading}</p>
       </header>
 
-      {/* method="post": see LoginForm — keeps a pre-hydration submit out of the URL. */}
       <form onSubmit={onSubmit} method="post" noValidate className="flex w-full flex-col gap-2xl">
         <TextInput
           type="email"

@@ -70,8 +70,6 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
               [describedBy, errorMessage ? errorId : undefined].filter(Boolean).join(" ") || undefined
             }
             placeholder=" "
-            // Fixed height rather than vertical padding: the visibility toggle's box is
-            // taller than the text, and would otherwise make this field outgrow the others.
             className="h-[49px] w-full gap-4 px-l"
             inputClassName="h-[17px] w-full text-sx leading-[17px] text-white"
             rightElement={
@@ -92,7 +90,6 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              // Floats from the 14px field text down to the 12px legend text: 12/14.
               "absolute top-1/2 left-l origin-left -translate-y-1/2 cursor-text text-sx leading-[17px] text-white/40 transition-[top,scale,color] duration-200 ease-out group-hover/password:text-white/60 group-has-[input:not(:placeholder-shown)]/password:top-0 group-has-[input:not(:placeholder-shown)]/password:scale-[0.857143] group-has-[input:not(:placeholder-shown)]/password:text-white/60 motion-reduce:transition-none",
               errorMessage
                 && "text-danger group-hover/password:text-danger group-has-[input:not(:placeholder-shown)]/password:text-danger",
