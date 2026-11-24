@@ -5,7 +5,15 @@ import { useState } from "react";
 import { LoginForm } from "@/features/auth-login";
 import { SignupForm } from "@/features/auth-signup";
 import { VerificationScreen } from "@/features/auth-verify-2fa";
+import { useAuthErrorMessage } from "@/shared/lib/use-auth-error-message";
 import { cn } from "@/shared/lib/utils";
+import { FormError } from "@/shared/ui/form-error";
+import {
+  clearPendingTwoFactor,
+  forgetPendingTwoFactor,
+  savePendingTwoFactor,
+  usePendingTwoFactor,
+} from "../model/pending-two-factor";
 import type { AuthState } from "../model/state";
 
 const cardClassName =
@@ -25,6 +33,13 @@ export function AuthCard() {
   const common = useIntlayer("common");
   const login = useIntlayer("login");
   const signup = useIntlayer("signup");
+  const authErrorMessage = useAuthErrorMessage();
+  const pending = usePendingTwoFactor();
+
+  const leaveChallenge = (sessionExpired = false) => {
+    clearPendingTwoFactor();
+    setState({ step: "login", sessionExpired });
+  };
 
   const isSignup = state.step === "signup";
   const heading = isSignup ? signup.heading : login.heading;
@@ -32,15 +47,21 @@ export function AuthCard() {
 
   // The verification step replaces the form in place rather than navigating, so the
   // card keeps its chrome and the tabs disappear.
-  if (state.step === "verify") {
+  if (pending) {
     return (
       <div className={cn(cardClassName, "gap-3xl")}>
-        <VerificationScreen methods={state.methods} onUseRecoveryCode={() => {}} />
+        <VerificationScreen
+          email={pending.email}
+          methods={pending.methods}
+          onUseRecoveryCode={() => {}}
+          onSessionExpired={() => leaveChallenge(true)}
+          onVerified={forgetPendingTwoFactor}
+        />
         {/* Not in the Figma frame, but without it a user who signed in to the wrong
             account has no way out of the challenge short of waiting for it to expire. */}
         <button
           type="button"
-          onClick={() => setState({ step: "login" })}
+          onClick={() => leaveChallenge()}
           className="cursor-pointer text-sx font-medium text-primary-200 transition-colors hover:text-white"
         >
           {common.backToSignIn}
@@ -80,11 +101,15 @@ export function AuthCard() {
             <div className="h-px w-full bg-white/15" />
           </div>
 
+          {state.step === "login" && state.sessionExpired && (
+            <FormError message={authErrorMessage("twoFactorExpired")} />
+          )}
+
           {isSignup ? (
             <SignupForm />
           ) : (
             <LoginForm
-              onTwoFactorRequired={(email, methods) => setState({ step: "verify", email, methods })}
+              onTwoFactorRequired={(email, methods) => savePendingTwoFactor({ email, methods })}
             />
           )}
         </div>

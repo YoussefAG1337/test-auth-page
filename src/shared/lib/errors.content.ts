@@ -21,6 +21,22 @@ const errorsContent = {
       en: "Too many attempts. Please try again in a moment.",
       fr: "Trop de tentatives. Veuillez réessayer dans un instant.",
     }),
+    invalidCode: t({
+      en: "Incorrect code. Check it and try again.",
+      fr: "Code incorrect. Vérifiez-le et réessayez.",
+    }),
+    codeExpired: t({
+      en: "This code has expired. Request a new one.",
+      fr: "Ce code a expiré. Demandez-en un nouveau.",
+    }),
+    tooManyCodeAttempts: t({
+      en: "Too many attempts with this code. Request a new one.",
+      fr: "Trop de tentatives avec ce code. Demandez-en un nouveau.",
+    }),
+    twoFactorExpired: t({
+      en: "Your sign-in session has expired. Please sign in again.",
+      fr: "Votre session de connexion a expiré. Veuillez vous reconnecter.",
+    }),
     generic: t({
       en: "Something went wrong. Please try again.",
       fr: "Une erreur est survenue. Veuillez réessayer.",

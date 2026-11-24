@@ -3,17 +3,30 @@ export type AuthErrorKey =
   | "emailAlreadyUsed"
   | "passwordTooShort"
   | "tooManyRequests"
+  | "invalidCode"
+  | "codeExpired"
+  | "tooManyCodeAttempts"
+  | "twoFactorExpired"
   | "generic";
 
 export class AuthError extends Error {
   readonly key: AuthErrorKey;
+  /** Seconds the server asked to wait, from `X-Retry-After` on a 429. */
+  readonly retryAfter?: number;
 
-  constructor(key: AuthErrorKey) {
+  constructor(key: AuthErrorKey, retryAfter?: number) {
     super(key);
     this.name = "AuthError";
     this.key = key;
+    this.retryAfter = retryAfter;
   }
 }
+
+/** Reads `X-Retry-After`; Better-Auth's error object doesn't carry response headers. */
+export const readRetryAfter = (response: Response): number | undefined => {
+  const seconds = Number(response.headers.get("X-Retry-After"));
+  return Number.isFinite(seconds) && seconds > 0 ? seconds : undefined;
+};
 
 // Better-Auth's typed error is only { status, statusText, message? } — `code` is sent
 // on the wire but absent from the type, and the two-factor fields live on the plugin's
@@ -45,6 +58,15 @@ export const authErrorKey = (error: unknown): AuthErrorKey => {
       return "emailAlreadyUsed";
     case "PASSWORD_TOO_SHORT":
       return "passwordTooShort";
+    case "INVALID_CODE":
+    case "INVALID_BACKUP_CODE":
+      return "invalidCode";
+    case "OTP_HAS_EXPIRED":
+      return "codeExpired";
+    case "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE":
+      return "tooManyCodeAttempts";
+    case "INVALID_TWO_FACTOR_COOKIE":
+      return "twoFactorExpired";
     default:
       return "generic";
   }
