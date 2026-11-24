@@ -41,7 +41,8 @@ const buttonVariants = cva(
         end: "justify-end",
       },
       textSize: {
-        base: "text-base",
+        // Inter's normal line-height: with py-m this gives the 51px of the Figma CTA.
+        base: "text-base leading-[normal]",
         sm: "text-[length:var(--text-sm)]",
         sx: "text-[length:var(--text-sx)]",
       },
