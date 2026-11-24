@@ -5,11 +5,8 @@ import { useLocale } from "next-intlayer";
 import { z } from "zod";
 import { CompanyStatus } from "@/entities/company";
 import { SECTORS } from "@/entities/sector";
+import { companiesUrl } from "./companies-url";
 
-// The contract of GET /api/companies. It lives here rather than in entities/company
-// because it joins two entities (company + sector), which only a higher layer may do.
-// The description arrives already in the requested language; sectors and status are
-// keys the UI translates.
 const companySchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -37,12 +34,11 @@ export function useCompanies() {
   return useQuery({
     queryKey: companyKeys.list(locale),
     queryFn: async (): Promise<Company[]> => {
-      const response = await fetch(`/api/companies?locale=${locale}`);
+      const response = await fetch(companiesUrl(locale));
       const result = companiesResponseSchema.parse(await response.json());
       if (!result.success) throw new Error(result.error);
       return result.data;
     },
-    // The list doesn't change during a visit; one request per locale is enough.
     staleTime: Number.POSITIVE_INFINITY,
   });
 }

@@ -123,6 +123,13 @@
   --radius-2xl: 2rem; /* 32px */
   --radius-3xl: 2.5rem; /* 40px */
   --radius-4xl: 3rem; /* 48px */
+
+  --animate-fade-in: fade-in 400ms ease-out;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
 }
 
 :root {

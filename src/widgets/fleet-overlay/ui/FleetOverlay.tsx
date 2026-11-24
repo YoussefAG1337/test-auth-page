@@ -5,10 +5,7 @@ import { SectorTag, useSectorLabel } from "@/entities/sector";
 import { cn } from "@/shared/lib/utils";
 import { useCompanies } from "../model/companies";
 
-// Card positions from the 1920×1080 Figma frames (490:960 and siblings). Each card is
-// anchored to its own edge, in px (negative = partly off screen), so the two columns
-// keep clear of the centred auth card at any width; `top` is a share of the viewport
-// height so the columns also fit at 900px tall.
+// Positions from the 1920×1080 Figma frame; `top` scales with the viewport height.
 const DESIGN_HEIGHT = 1080;
 const SLOTS = [
   { side: "left", offset: -136, top: 57 },
@@ -21,15 +18,6 @@ const SLOTS = [
   { side: "right", offset: -271, top: 847 },
 ] as const;
 
-/**
- * The faded company cards behind every auth screen. Content comes from
- * GET /api/companies; while it loads (or if it fails) nothing is shown, since the
- * layer is decorative.
- *
- * Below 1920px wide the cards shrink to 80% towards their edge: at 1400px that keeps
- * the left column under 306px, clear of the auth card at 402px. Below 1280px, which
- * isn't a target size, there is no room for them at all.
- */
 export function FleetOverlay() {
   const { data: companies } = useCompanies();
   const sectorLabel = useSectorLabel();
@@ -37,7 +25,7 @@ export function FleetOverlay() {
   if (!companies) return null;
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 max-[1279px]:hidden">
+    <div aria-hidden className="pointer-events-none absolute inset-0 animate-fade-in motion-reduce:animate-none max-[1279px]:hidden">
       {SLOTS.map((slot, index) => {
         const company = companies[index];
         if (!company) return null;
