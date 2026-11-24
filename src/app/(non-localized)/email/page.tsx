@@ -1,3 +1,5 @@
+import { getIntlayer, localeDetector } from "intlayer";
+import { headers } from "next/headers";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { ResetPasswordEmail } from "@/features/forgot-password";
@@ -22,7 +24,15 @@ async function LatestResetEmail({ searchParams }: EmailPageProps) {
   });
 
   if (!mail) {
-    return <p className="text-sx text-white/60">No reset email yet{recipient && ` for ${recipient}`}.</p>;
+    // No URL locale on this page, so the empty state follows the browser's language.
+    const locale = localeDetector({ "accept-language": (await headers()).get("accept-language") ?? undefined });
+    const { emptyState, emptyStateFor } = getIntlayer("reset-email", locale);
+
+    return (
+      <p lang={locale} className="text-sx text-white/60">
+        {recipient ? `${emptyStateFor} ${recipient}.` : emptyState}
+      </p>
+    );
   }
 
   return <ResetPasswordEmail resetUrl={mail.content} />;

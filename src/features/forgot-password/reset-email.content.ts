@@ -20,6 +20,16 @@ const resetEmailContent = {
     // Split around the company name, which is styled on its own.
     footerBefore: t({ en: "This is an automated message from ", fr: "Ceci est un message automatique de " }),
     footerAfter: t({ en: ". Please do not reply.", fr: ". Merci de ne pas y répondre." }),
+
+    // Shown on /email before any reset was requested; the address follows emptyStateFor.
+    emptyState: t({
+      en: "No reset email yet.",
+      fr: "Aucun courriel de réinitialisation pour l’instant.",
+    }),
+    emptyStateFor: t({
+      en: "No reset email yet for",
+      fr: "Aucun courriel de réinitialisation pour",
+    }),
   },
 } satisfies Dictionary;
 
