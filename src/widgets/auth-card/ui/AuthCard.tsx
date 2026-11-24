@@ -4,8 +4,12 @@ import { useIntlayer } from "next-intlayer";
 import { useState } from "react";
 import { LoginForm } from "@/features/auth-login";
 import { SignupForm } from "@/features/auth-signup";
+import { VerificationScreen } from "@/features/auth-verify-2fa";
 import { cn } from "@/shared/lib/utils";
 import type { AuthState } from "../model/state";
+
+const cardClassName =
+  "flex w-full max-w-[595px] flex-col items-center rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]";
 
 const tabClassName = (isActive: boolean) =>
   cn(
@@ -23,24 +27,17 @@ export function AuthCard() {
   const signup = useIntlayer("signup");
 
   const isSignup = state.step === "signup";
-  const isVerifying = state.step === "verify";
-
-  const heading = isVerifying
-    ? common.verifyHeading
-    : isSignup
-      ? signup.heading
-      : login.heading;
-  const subheading = isVerifying ? common.verifyPending : isSignup ? signup.subheading : login.subheading;
+  const heading = isSignup ? signup.heading : login.heading;
+  const subheading = isSignup ? signup.subheading : login.subheading;
 
   // The verification step replaces the form in place rather than navigating, so the
-  // card keeps its chrome and the tabs disappear. Filled in by the two-factor feature.
-  if (isVerifying) {
+  // card keeps its chrome and the tabs disappear.
+  if (state.step === "verify") {
     return (
-      <div className="flex w-full max-w-[595px] flex-col items-center gap-4xl rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]">
-        <header className="flex flex-col items-center justify-center gap-2.5 text-center">
-          <h1 className="text-lm font-semibold leading-[34px] text-white">{heading}</h1>
-          <p className="text-s font-light text-white/80">{subheading}</p>
-        </header>
+      <div className={cn(cardClassName, "gap-3xl")}>
+        <VerificationScreen methods={state.methods} onUseRecoveryCode={() => {}} />
+        {/* Not in the Figma frame, but without it a user who signed in to the wrong
+            account has no way out of the challenge short of waiting for it to expire. */}
         <button
           type="button"
           onClick={() => setState({ step: "login" })}
@@ -53,7 +50,7 @@ export function AuthCard() {
   }
 
   return (
-    <div className="flex w-full max-w-[595px] flex-col items-center gap-4xl rounded-m bg-white/[0.03] p-4xl shadow-[0px_30px_40px_0px_rgba(0,0,0,0.3)]">
+    <div className={cn(cardClassName, "gap-4xl")}>
       <header className="flex flex-col items-center justify-center gap-2.5 text-center">
         <h1 className="text-lm font-semibold leading-[34px] text-white">{heading}</h1>
         <p className="text-s font-light text-white/80">{subheading}</p>

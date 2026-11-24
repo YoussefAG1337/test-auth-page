@@ -22,11 +22,6 @@ const commonContent = {
     }),
     signOut: t({ en: "Sign out", fr: "Se déconnecter" }),
 
-    verifyHeading: t({ en: "Confirm your identity", fr: "Confirmez votre identité" }),
-    verifyPending: t({
-      en: "Two-step verification for this account is not available yet.",
-      fr: "La vérification en deux étapes de ce compte n’est pas encore disponible.",
-    }),
     backToSignIn: t({ en: "Back to sign in", fr: "Retour à la connexion" }),
 
     validationRequired: t({
